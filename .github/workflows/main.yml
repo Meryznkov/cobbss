@@ -1,0 +1,23 @@
+name: RDP with Ngrok
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Ngrok RDP
+        env:
+          NGROK_AUTH_TOKEN: 2erDhGwehejqSJt6dYSZyfw6Rmy_6zeYCC6hv97W8idd5TA5t # Ganti dengan token Ngrok Anda
+          RDP_PASSWORD: Aku@1 # Ganti dengan password RDP Anda
+        run: |
+          powershell -ExecutionPolicy Bypass -File .\configure.ps1 -ngrokAuthToken $env:NGROK_AUTH_TOKEN -rdpPassword $env:RDP_PASSWORD
+      
+      - name: Wait for Ngrok to establish tunnel
+        run: |
+          sleep 10 # Tunggu beberapa detik untuk memastikan Ngrok siap
